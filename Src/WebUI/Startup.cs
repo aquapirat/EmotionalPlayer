@@ -48,8 +48,6 @@ namespace Player.WebUI
                 .AddNewtonsoftJson()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IPlayerDbContext>());
 
-            services.AddRazorPages();
-
             // Customise default API behaviour
             services.Configure<ApiBehaviorOptions>(options =>
             {
@@ -58,7 +56,7 @@ namespace Player.WebUI
 
             services.AddOpenApiDocument(configure =>
             {
-                configure.Title = "Player Traders API";
+                configure.Title = "EmotionalPlayer API";
             });
 
             _services = services;
@@ -67,10 +65,13 @@ namespace Player.WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment())
+            if (Environment.IsDevelopment() || Environment.IsDocker())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
+
+                app.UseOpenApi();
+                app.UseSwaggerUi3();
             }
             else
             {
@@ -84,14 +85,6 @@ namespace Player.WebUI
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseOpenApi();
-
-            app.UseSwaggerUi3(settings =>
-            {
-                settings.Path = "/api";
-                //    settings.DocumentPath = "/api/specification.json";   Enable when NSwag.MSBuild is upgraded to .NET Core 3.0
-            });
-
             app.UseRouting();
 
             app.UseAuthentication();
@@ -103,19 +96,6 @@ namespace Player.WebUI
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapControllers();
-            });
-
-            app.UseSpa(spa =>
-            {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                spa.Options.SourcePath = "ClientApp";
-
-                if (Environment.IsDevelopment())
-                {
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-                }
             });
         }
     }

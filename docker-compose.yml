@@ -1,0 +1,20 @@
+version: "3.5"
+services:
+  db:
+    image: microsoft/mssql-server-linux:2017-latest
+    environment:
+      SA_PASSWORD: "Sample_passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "4300:1433"
+
+  backend:
+    build:
+      context: .
+      dockerfile: Src/WebUI/Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "4500:80"
+    depends_on:
+      - db

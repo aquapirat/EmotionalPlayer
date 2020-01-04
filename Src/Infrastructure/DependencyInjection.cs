@@ -11,7 +11,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Player.Application.Common.Interfaces;
 using Player.Common;
-using Player.Infrastructure.Files;
 using Player.Infrastructure.Identity;
 
 namespace Player.Infrastructure
@@ -23,7 +22,6 @@ namespace Player.Infrastructure
             services.AddScoped<IUserManager, UserManagerService>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IDateTime, MachineDateTime>();
-            services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("PlayerDatabase")));
