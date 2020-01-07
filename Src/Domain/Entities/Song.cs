@@ -1,4 +1,5 @@
-﻿using Player.Domain.Common;
+﻿using System;
+using Player.Domain.Common;
 
 namespace Player.Domain.Entities
 {
@@ -6,6 +7,7 @@ namespace Player.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Length { get; set; }
+        public TimeSpan? Length { get; set; }
+        public string BlobReference { get; set; }
     }
 }

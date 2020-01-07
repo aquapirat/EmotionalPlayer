@@ -7,7 +7,7 @@ namespace Player.Application.Common.Interfaces
 {
     public interface IPlayerDbContext
     {
-        public DbSet<Song> Categories { get; set; }
+        public DbSet<Song> Songs { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

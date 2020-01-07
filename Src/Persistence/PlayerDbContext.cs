@@ -28,7 +28,7 @@ namespace Player.Persistence
             _dateTime = dateTime;
         }
 
-        public DbSet<Song> Categories { get; set; }
+        public DbSet<Song> Songs { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
