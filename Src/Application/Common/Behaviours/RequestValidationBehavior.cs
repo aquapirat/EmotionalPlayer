@@ -25,10 +25,9 @@ namespace Player.Application.Common.Behaviours
             var failures = _validators
                 .Select(v => v.Validate(context))
                 .SelectMany(result => result.Errors)
-                .Where(f => f != null)
-                .ToList();
+                .Where(f => f != null);
 
-            if (failures.Count != 0)
+            if (failures.Any())
             {
                 throw new ValidationException(failures);
             }

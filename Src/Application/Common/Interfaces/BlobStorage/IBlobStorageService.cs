@@ -2,9 +2,9 @@
 
 namespace Player.Application.Common.Interfaces.BlobStorage
 {
-    interface IBlobStorageService
+    public interface IBlobStorageService
     {
-        void UploadFile(Stream stream);
-        bool DeleteFile(string id);        
+        void UploadBlob(string name, Stream stream);
+        bool DeleteBlob(string id);        
     }
 }

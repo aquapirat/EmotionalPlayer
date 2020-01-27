@@ -69,7 +69,10 @@ namespace Player.WebUI
                 app.UseDatabaseErrorPage();
 
                 app.UseOpenApi();
-                app.UseSwaggerUi3();
+                app.UseSwaggerUi3(config =>
+                {
+                    config.EnableTryItOut = true;
+                });
             }
             else
             {
