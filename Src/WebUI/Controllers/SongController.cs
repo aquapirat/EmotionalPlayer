@@ -5,17 +5,18 @@ using Player.Application.Songs.Commands.Create;
 using Player.Application.Songs.Commands.Delete;
 using Player.Application.Songs.Commands.Update;
 using Player.Application.Songs.Queries.GetSongDetails;
+using Player.Domain.Entities;
 
 namespace Player.WebUI.Controllers
 {
-    [ValidateAntiForgeryToken]
     public class SongController : BaseController
     {
-        [HttpGet]
+        [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Get(int id)
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Song>> Get(int id)
         {
-            return Ok(Mediator.Send(new GetSongDetailsQuery { Id = id }));
+            return Ok(await Mediator.Send(new GetSongDetailsQuery { Id = id }));
         }
 
         [HttpPost]
@@ -30,6 +31,7 @@ namespace Player.WebUI.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Update(UpdateSongCommand command)
         {
             return Ok(await Mediator.Send(command));

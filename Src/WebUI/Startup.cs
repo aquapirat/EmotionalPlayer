@@ -83,11 +83,11 @@ namespace Player.WebUI
 
             app.UseCustomExceptionHandler();
             app.UseHealthChecks("/health");
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCors(config => config.AllowAnyOrigin());
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();

@@ -3,10 +3,10 @@ services:
   db:
     image: microsoft/mssql-server-linux:2017-latest
     environment:
-      SA_PASSWORD: "Sample_passw0rd"
-      ACCEPT_EULA: "Y"
+      SA_PASSWORD: Sample_passw0rd
+      ACCEPT_EULA: Y
     ports:
-      - "4300:1433"
+      - "1433:1433"
       
   storage:
     image: arafato/azurite
