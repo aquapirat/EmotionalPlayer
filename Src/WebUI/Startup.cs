@@ -11,6 +11,11 @@ using Player.Application;
 using Player.Application.Common.Interfaces;
 using Player.WebUI.Common;
 using Player.WebUI.Services;
+using System.Collections.Generic;
+using Microsoft.OpenApi.Models;
+using System.IO;
+using System;
+using System.Reflection;
 
 namespace Player.WebUI
 {
@@ -52,9 +57,9 @@ namespace Player.WebUI
                 options.SuppressModelStateInvalidFilter = true;
             });
 
-            services.AddOpenApiDocument(configure =>
+            services.AddSwaggerGen(options =>
             {
-                configure.Title = "EmotionalPlayer API";
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Protected API", Version = "v1" });
             });
 
             _services = services;
@@ -63,15 +68,16 @@ namespace Player.WebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app)
         {
-            if (Environment.IsDevelopment() || Environment.IsDocker())
+            if (Environment.IsDevelopment() || Environment.IsDocker() || Environment.IsEnvironment("Localhost"))
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
 
-                app.UseOpenApi();
-                app.UseSwaggerUi3(config =>
+                app.UseSwagger();
+
+                app.UseSwaggerUI(options =>
                 {
-                    config.EnableTryItOut = true;
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
             }
             else
@@ -83,14 +89,11 @@ namespace Player.WebUI
 
             app.UseCustomExceptionHandler();
             app.UseHealthChecks("/health");
-            //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCors(config => config.AllowAnyOrigin());
-            app.UseAuthentication();
-            app.UseIdentityServer();
-            app.UseAuthorization();
+            app.UseCors(config => config.AllowAnyOrigin());            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

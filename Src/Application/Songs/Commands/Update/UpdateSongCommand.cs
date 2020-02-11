@@ -7,5 +7,6 @@ namespace Player.Application.Songs.Commands.Update
 {
     public class UpdateSongCommand : IRequest
     {
+        public int Id { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Player.Application.Common.Interfaces;
@@ -25,7 +26,7 @@ namespace Player.Application.Songs.Commands.Create
             var newSong = new Song
             {
                 Name = request.Name,
-                Length = request.Length,
+                Length = TimeSpan.Parse(request.Length),
             };
 
             using(var stream = request.AudioFile.OpenReadStream())
