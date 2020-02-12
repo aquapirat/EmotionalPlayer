@@ -1,6 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Azure.Storage.Blobs;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Player.Application.Common.Interfaces.BlobStorage;
 using Player.Infrastructure.Storage.AzureBlobStorage.Interfaces;
 
@@ -31,11 +34,19 @@ namespace Player.Infrastructure.Storage.AzureBlobStorage
 
         public void UploadBlob(string name, Stream stream)
         {
-            var client = _storageAuthenticator.Authenticate();
+            /*var client = _storageAuthenticator.Authenticate();
             var blobName = _storageNameGenerator.GenerateName(name);
-            BlobContainerClient containerClient;
+            BlobContainerClient containerClient;*/
+            var blobName = _storageNameGenerator.GenerateName(name);
+            var cloudBlobClient = new CloudBlobClient(new Uri("http://172.20.0.1"), new StorageCredentials("devstoreaccount1", @"Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=="));
+            var container = cloudBlobClient.GetContainerReference("songs");
+            container.CreateIfNotExistsAsync();
 
-            if(!ContainerExists(client, SongsContainerName))
+            var blob = container.GetBlockBlobReference(blobName);
+            blob.Properties.ContentType = "audio/mp3";
+            blob.UploadFromStreamAsync(stream);
+
+            /*if(!ContainerExists(client, SongsContainerName))
             {
                 containerClient = client.CreateBlobContainer(SongsContainerName);
             }
@@ -44,7 +55,9 @@ namespace Player.Infrastructure.Storage.AzureBlobStorage
                 containerClient = client.GetBlobContainerClient(SongsContainerName);
             }
 
-            containerClient.UploadBlob(blobName, stream);
+            var blobClient = containerClient.Up(blobName);
+            blobClient.SetHttpHeaders(new BlobHttpHeaders { ContentType = "audio/mp3" });
+            blobClient.Upload(stream);*/
 
         }
 

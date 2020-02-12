@@ -31,7 +31,7 @@ namespace Player.Application.Songs.Commands.Create
 
             using(var stream = request.AudioFile.OpenReadStream())
             {
-                _blobStorageService.UploadBlob(request.Name, stream);
+                _blobStorageService.UploadBlob(request.AudioFile.FileName, stream);
             }
 
             _playerDbContext.Songs.Add(newSong);

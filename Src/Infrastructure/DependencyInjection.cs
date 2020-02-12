@@ -1,16 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using IdentityModel;
-using IdentityServer4.AccessTokenValidation;
-using IdentityServer4.Models;
-using IdentityServer4.Test;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Player.Application.Common.Interfaces;
 using Player.Application.Common.Interfaces.BlobStorage;
 using Player.Common;
@@ -25,6 +16,8 @@ namespace Player.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
+            services.Configure<AzureBlobStorageCredentials>(configuration.GetSection("AzureBlobStorage").GetSection("Credentials"));
+
             services.AddScoped<IUserManager, UserManagerService>();
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IDateTime, MachineDateTime>();
@@ -34,8 +27,6 @@ namespace Player.Infrastructure
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("PlayerDatabase")));
-
-            services.Configure<AzureBlobStorageCredentials>(configuration.GetSection("AzureBlobStorage").GetSection("Credentials"));
 
             return services;
         }
