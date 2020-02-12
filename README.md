@@ -23,7 +23,7 @@ Follow these steps to get your development environment set up:
 	 ```
 	 docker-compose up
 	 ```
-  4. Launch [https://localhost:44376/api](http://localhost:44376/api) in your browser to view the API
+  4. Launch [https://localhost:4500/swagger](http://localhost:4500/swagger) in your browser to view the API
 
 ## Technologies
 * .NET Core 3
